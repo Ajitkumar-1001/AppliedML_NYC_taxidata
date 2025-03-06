@@ -1,6 +1,6 @@
 import logging
 import os
-import dagshub
+
 import mlflow
 from mlflow.models import infer_signature
 
@@ -13,25 +13,11 @@ def set_mlflow_tracking():
     """
     Set up MLflow tracking server credentials and URI.
     """
-    # Initialize DagsHub for MLflow tracking
-    dagshub.init(repo_owner='ajitkumarsenthil5', 
-             repo_name='AppliedML_NYC_Taxidata_pred',  
-             mlflow=True)    # Check if MLFLOW_TRACKING_URI is set in environment variables
-    if "MLFLOW_TRACKING_URI" in os.environ:
-        uri = os.environ["MLFLOW_TRACKING_URI"]
-        mlflow.set_tracking_uri(uri)
-    else:
-        # DagsHub will set the tracking URI automatically
-        logger.info("Using DagsHub MLflow tracking URI")
-
+    uri = os.environ["MLFLOW_TRACKING_URI"]
+    mlflow.set_tracking_uri(uri)
     logger.info("MLflow tracking URI and credentials set.")
 
     return mlflow
-    # uri = os.environ["MLFLOW_TRACKING_URI"]
-    # mlflow.set_tracking_uri(uri)
-    # logger.info("MLflow tracking URI and credentials set.")
-
-    # return mlflow
 
 
 def log_model_to_mlflow(
@@ -56,9 +42,6 @@ def log_model_to_mlflow(
     - score: Optional evaluation metric to log.
     """
     try:
-        # Initialize DagsHub connection if not already done
-        if not mlflow.get_tracking_uri():
-            set_mlflow_tracking()
         # Set the experiment
         mlflow.set_experiment(experiment_name)
         logger.info(f"Experiment set to: {experiment_name}")
@@ -74,8 +57,7 @@ def log_model_to_mlflow(
             if score is not None:
                 mlflow.log_metric(metric_name, score)
                 logger.info(f"Logged {metric_name}: {score}")
-            # Add tag for DagsHub repository
-            mlflow.set_tag("dagshub_repository", "ajitkumarsenthil5/AppliedML_NYC_Taxidata_pred")
+
             # Infer the model signature
             signature = infer_signature(input_data, model.predict(input_data))
             logger.info("Model signature inferred.")
