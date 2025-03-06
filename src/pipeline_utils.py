@@ -48,6 +48,13 @@ class TemporalFeatureEngineer(BaseEstimator, TransformerMixin):
 # Instantiate the temporal feature engineer
 add_temporal_features = TemporalFeatureEngineer()
 
+hyper_params = {
+    "n_estimators": 100,
+    "learning_rate": 0.05,
+    "max_depth": 5
+    }
+
+
 
 # Function to return the pipeline
 def get_pipeline(**hyper_params):
