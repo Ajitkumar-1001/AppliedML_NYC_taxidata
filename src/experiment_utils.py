@@ -14,8 +14,9 @@ def set_mlflow_tracking():
     Set up MLflow tracking server credentials and URI.
     """
     # Initialize DagsHub for MLflow tracking
-    dagshub.init(repo_owner="ashiashish100", repo_name="NYC_Taxi", mlflow=True)
-    # Check if MLFLOW_TRACKING_URI is set in environment variables
+    dagshub.init(repo_owner='ajitkumarsenthil5', 
+             repo_name='AppliedML_NYC_Taxidata_pred',  
+             mlflow=True)    # Check if MLFLOW_TRACKING_URI is set in environment variables
     if "MLFLOW_TRACKING_URI" in os.environ:
         uri = os.environ["MLFLOW_TRACKING_URI"]
         mlflow.set_tracking_uri(uri)
@@ -74,7 +75,7 @@ def log_model_to_mlflow(
                 mlflow.log_metric(metric_name, score)
                 logger.info(f"Logged {metric_name}: {score}")
             # Add tag for DagsHub repository
-            mlflow.set_tag("dagshub_repository", "ashiashish100/NYC_Taxi")
+            mlflow.set_tag("dagshub_repository", "ajitkumarsenthil5/AppliedML_NYC_Taxidata_pred")
             # Infer the model signature
             signature = infer_signature(input_data, model.predict(input_data))
             logger.info("Model signature inferred.")
